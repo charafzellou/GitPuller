@@ -1,3 +1,6 @@
+include .env
+export
+
 IMG-NAME=gitpuller
 
 help:
@@ -9,12 +12,15 @@ help:
 	@echo "make docker-clean  :   stops and deletes both the container and image"
 
 init:
-	@cd src/ && go get github.com/joho/godotenv
+	@cp .env.dist .env
+	@cd src/ && go mod tidy
 
 build:
 	@cd src/ && go build -o ../bin/${IMG-NAME} .
 
 run:
+	@echo "Makefile MODE variable: $(MODE)"
+	@echo "Environment MODE before running:" && env | grep -i MODE || true
 	@cd src/ && go run .
 
 docker-build:

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
 func setVarEnvs() (string, string, string) {
@@ -21,6 +22,13 @@ func setVarEnvs() (string, string, string) {
 		log.Println("PERSONAL_ACCESS_TOKEN environment variable not set")
 	}
 
+	// normalize values in case .env contains quotes
+	mode = strings.TrimSpace(strings.Trim(mode, "\"'"))
+	pseudo = strings.TrimSpace(strings.Trim(pseudo, "\"'"))
+	token = strings.TrimSpace(strings.Trim(token, "\"'"))
+
+	// debug raw representation to catch hidden characters
+	fmt.Printf("DEBUG: mode raw value = %q\n", mode)
 	switch mode {
 	case "users":
 		fmt.Printf("You are pulling repositories for a USER under this configuration.\n")

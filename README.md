@@ -57,13 +57,13 @@ The program will detect the repositories, pull them locally, then apply a `git p
 Build the Docker image with the following command:
 
 ```bash
-make build . -t gitpuller
+make docker-build
 ```
 
 Run the Docker container from the image we created:
 
 ```bash
-make run gitpuller
+make docker-run
 ```
 
 This will start the application and clone all the repositories in the specified organization to a folder called `repositories` in the current directory.

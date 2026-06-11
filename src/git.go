@@ -159,8 +159,8 @@ func cloneAndPullRepo(pseudo string, repo Repository, token string, wg *sync.Wai
 		if repo.Private {
 			cloneCmd.Env = append(cloneCmd.Env, "GIT_ASKPASS=echo")
 		}
-		if err := cloneCmd.Run(); err != nil {
-			log.Fatalf("Error cloning %s: %s", repo.Name, err.Error())
+		if out, err := cloneCmd.CombinedOutput(); err != nil {
+			log.Fatalf("Error cloning %s: %s\n%s", repo.Name, err.Error(), string(out))
 		}
 	} else if err != nil {
 		log.Fatalf("Error checking if %s exists: %s", path, err.Error())
@@ -170,8 +170,8 @@ func cloneAndPullRepo(pseudo string, repo Repository, token string, wg *sync.Wai
 	fmt.Printf("Executing \"git pull --all\" command in %s\n", repo.Name)
 	pullCmd := exec.Command("git", "pull", "--all")
 	pullCmd.Dir = path
-	if err := pullCmd.Run(); err != nil {
-		log.Fatalf("Error pulling changes for %s: %s", repo.Name, err.Error())
+	if out, err := pullCmd.CombinedOutput(); err != nil {
+		log.Fatalf("Error pulling changes for %s: %s\n%s", repo.Name, err.Error(), string(out))
 	}
 
 	// Get the most recent commit
@@ -179,8 +179,8 @@ func cloneAndPullRepo(pseudo string, repo Repository, token string, wg *sync.Wai
 	fmt.Printf("Most recent commit for %s: %s\n", repo.Name, mostRecentCommit)
 	commitCmd := exec.Command("git", "checkout", mostRecentCommit)
 	commitCmd.Dir = path
-	if err := commitCmd.Run(); err != nil {
-		log.Fatalf("Error checking out commit %s for %s: %s", mostRecentCommit, repo.Name, err.Error())
+	if out, err := commitCmd.CombinedOutput(); err != nil {
+		log.Fatalf("Error checking out commit %s for %s: %s\n%s", mostRecentCommit, repo.Name, err.Error(), string(out))
 	}
 
 	fmt.Printf("Pulled all changes for %s\n", repo.Name)
