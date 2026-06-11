@@ -13,9 +13,11 @@ Before you can use this application, you need to have the following:
 - Go 1.21 or higher
 - Docker 23.0 or higher
 - A Github account
-    - An active PAT [(Personal Access Token)](https://github.com/settings/tokens) with the `repo` scope
+    - An active PAT [(Personal Access Token)](https://github.com/settings/personal-access-tokens) with the `repo` scope
 
-> **⚠️** Note that **the PAT is optional** if the repositories you want to pull are public. If not, you will need to create one and add it in the `.env` file.
+> **⚠️** Note that **the PAT is optional** if the repositories you want to pull are public. If the repositories are private, you will need to create one and add it in the `.env` file.
+> 
+> PAT can be created by following the instructions in the [Github documentation](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
 
 ### Setting up:
 
@@ -34,8 +36,9 @@ cd gitpuller
 Create an environment file `.env` with your Github organization name and personal access token:
 
 ```bash
-ORG_NAME=<your-github-organization-name>
-PERSONAL_TOKEN=<your-github-access-token>
+export MODE="users" ## 'users' or 'orgs'
+export PSEUDONAME="charafzellou" ## for example, 'octocat' for users or 'github' for orgs
+export PERSONAL_ACCESS_TOKEN="" ## make sure to set the appropriate scopes for your token, such as 'repo' and 'read:org'```
 ```
 
 ### Usage as a binary:
@@ -47,7 +50,7 @@ make build
 make run
 ```
 
-The program will detect the repositories, and apply a `git pull --all` on them.
+The program will detect the repositories, pull them locally, then apply a `git pull --all` on them.
 
 ### Usage as a Docker container:
 
